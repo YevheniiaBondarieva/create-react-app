@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const Input = ({
 	id,
 	labelText,
@@ -21,6 +23,15 @@ const Input = ({
 			/>
 		</>
 	);
+};
+
+Input.propTypes = {
+	id: PropTypes.string,
+	labelText: PropTypes.string,
+	placeholdetText: PropTypes.string,
+	onChange: PropTypes.func,
+	type: PropTypes.string,
+	labelClassName: PropTypes.string,
 };
 
 export default Input;

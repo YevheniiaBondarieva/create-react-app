@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const Button = ({
 	buttonText,
 	buttonType,
@@ -15,6 +17,13 @@ const Button = ({
 			{buttonText}
 		</button>
 	);
+};
+
+Button.propTypes = {
+	buttonText: PropTypes.string,
+	buttonType: PropTypes.string,
+	onClick: PropTypes.func,
+	className: PropTypes.string,
 };
 
 export default Button;
