@@ -1,6 +1,7 @@
 const Input = ({
 	id,
 	labelText,
+	labelClassName,
 	placeholdetText,
 	onChange,
 	type,
@@ -8,7 +9,9 @@ const Input = ({
 }) => {
 	return (
 		<>
-			<label htmlFor={id}>{labelText} </label>
+			<label htmlFor={id} className={labelClassName}>
+				{labelText}{' '}
+			</label>
 			<input
 				type={type}
 				id={id}

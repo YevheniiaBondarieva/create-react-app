@@ -28,109 +28,94 @@ import { v4 as uuidv4 } from 'uuid';
 import { useState, useEffect } from 'react';
 
 const Main = styled.main`
-	margin: 1rem;
-	margin-top: 0px;
-	padding: 1rem;
-	border: 3px solid rgb(6, 175, 247);
-	border-radius: 1px;
+	.createCourse,
+	.createAuthor,
+	.deleteAuthor,
+	.addAuthor {
+		float: right;
+		width: 8rem;
+		height: 1.7rem;
+	}
+	#courseTitle {
+		height: 1.5rem;
+		padding-left: 10px;
+		margin-bottom: 10px;
+	}
+	section.courseTitleInputAndCreateCourseButton,
+	section.forDescription {
+		display: block;
+	}
+	.labelForTitle {
+		display: block;
+		margin-bottom: 7px;
+	}
+	.labelForDescription {
+		display: block;
+		margin-bottom: 5px;
+	}
+	textarea {
+		width: 97.7%;
+		padding-left: 1rem;
+		padding-top: 1rem;
+		border: 2px solid var(--textarea-border-color);
+	}
+	section.authorsAndDuration {
+		border: 2px solid black;
+		margin-top: 10px;
+		display: grid;
+		padding: 1rem;
+		grid-template-columns: 1fr 1fr;
+	}
+	section.authorsAndDuration_createAuthor > h3,
+	section.authorsAndDuration_authorsList > h3,
+	section.authorsAndDuration_duration > h3,
+	section.authorsAndDuration_courseAuthors > h3 {
+		text-align: center;
+	}
+	.labelForAuthorName,
+	.labelForDuration {
+		display: block;
+		margin-bottom: 7px;
+	}
+	#authorName,
+	#duration {
+		display: block;
+		height: 1.5rem;
+		padding-left: 10px;
+		margin-bottom: 10px;
+		width: 80%;
+	}
+	.createAuthor {
+		display: block;
+		float: none;
+	}
 
-	form {
-		.createCourse,
-		.createAuthor,
-		.deleteAuthor,
-		.addAuthor {
-			float: right;
-			border: 2px solid rgb(191, 112, 243);
-			width: 8rem;
-			height: 1.7rem;
-			color: black;
-			background-color: white;
-			font-size: 14px;
-			font-weight: 400;
-		}
-		#courseTitle {
-			border: 2px solid rgb(232, 187, 10);
-			height: 1.5rem;
-			color: black;
-			background-color: white;
-			font-size: 16px;
-			font-weight: 500;
-			padding-left: 10px;
-			margin-bottom: 10px;
-		}
-		section {
-			display: block;
-			label[for='courseTitle'] {
-				display: block;
-				margin-bottom: 7px;
-			}
-			label[for='description'] {
-				display: block;
-				margin-bottom: 5px;
-			}
-			textarea {
-				width: 97.7%;
-				padding-left: 1rem;
-				padding-top: 1rem;
-				border: 2px solid rgb(232, 232, 10);
-			}
-		}
-		section.authorsAndDuration {
-			border: 2px solid black;
-			margin-top: 10px;
-			display: grid;
-			padding: 1rem;
-			grid-template-columns: 1fr 1fr;
-			section {
-				h3 {
-					text-align: center;
-				}
-				label[for='authorName'],
-				label[for='duration'] {
-					display: block;
-					margin-bottom: 7px;
-				}
-				#authorName,
-				#duration {
-					display: block;
-					border: 2px solid rgb(232, 187, 10);
-					height: 1.5rem;
-					color: black;
-					background-color: white;
-					font-size: 16px;
-					font-weight: 500;
-					padding-left: 10px;
-					margin-bottom: 10px;
-					width: 80%;
-				}
-				.createAuthor {
-					display: block;
-					float: none;
-				}
-
-				#duration + p {
-					font-size: 24px;
-				}
-				#duration + p > span {
-					font-weight: bold;
-					font-size: 26px;
-				}
-				div > p {
-					display: inline-block;
-				}
-				div > button {
-					margin-top: 10px;
-					margin-right: 20%;
-				}
-				.listIsEmpty {
-					text-align: center;
-				}
-			}
-		}
+	#duration + p {
+		font-size: 24px;
+	}
+	#duration + p > span {
+		font-weight: bold;
+		font-size: var(--heading-font-size);
+	}
+	section.authorsAndDuration_authorsList > div > p,
+	section.authorsAndDuration_authorsList > div > p,
+	section.authorsAndDuration_courseAuthors > div > p,
+	section.authorsAndDuration_courseAuthors > div > p {
+		display: inline-block;
+	}
+	section.authorsAndDuration_authorsList > div > button,
+	section.authorsAndDuration_authorsList > div > button,
+	section.authorsAndDuration_courseAuthors > div > button,
+	section.authorsAndDuration_courseAuthors > div > button {
+		margin-top: 10px;
+		margin-right: 20%;
+	}
+	.listIsEmpty {
+		text-align: center;
 	}
 `;
 
-const CreateCourse = ({ notDisplayForm }) => {
+const CreateCourse = ({ hideForm }) => {
 	const [courseTitle, setCourseTitle] = useState('');
 	const [courseDescription, setCourseDescription] = useState('');
 	const [courseAuthors, setCourseAuthor] = useState([]);
@@ -145,22 +130,28 @@ const CreateCourse = ({ notDisplayForm }) => {
 		setAuthors([...mockedAuthorsList]);
 	}, []);
 
+	const courseTitleExists = Boolean(courseTitle);
+	const validCourseDescription = courseDescription.length >= 2;
+	const validCourseDuration = courseDuration > 0;
+	const validCourseAuthors = courseAuthors.length > 0;
+
 	const createCourse = () => {
 		if (
-			courseTitle &&
-			courseDescription.length >= 2 &&
-			courseDuration > 0 &&
-			courseAuthors.length > 0
+			courseTitleExists &&
+			validCourseDescription &&
+			validCourseDuration &&
+			validCourseAuthors
 		) {
-			mockedCoursesList.push({
+			const newCourse = {
 				id: uuidv4(),
 				title: courseTitle,
 				description: courseDescription,
 				creationDate: dateGeneratop(),
 				duration: courseDuration,
 				authors: courseAuthors.map((item) => item['id']),
-			});
-			notDisplayForm();
+			};
+			mockedCoursesList.push(newCourse);
+			hideForm();
 		} else {
 			window.alert('Please, fill in all fields');
 		}
@@ -220,10 +211,11 @@ const CreateCourse = ({ notDisplayForm }) => {
 	return (
 		<Main>
 			<form>
-				<section>
+				<section className='courseTitleInputAndCreateCourseButton'>
 					<Input
 						id='courseTitle'
 						labelText={courseTitleLabelText}
+						labelClassName='labelForTitle'
 						placeholdetText={courseTitlePlaceholdetText}
 						type='text'
 						onChange={(e) => setCourseTitle(e.target.value)}
@@ -238,8 +230,10 @@ const CreateCourse = ({ notDisplayForm }) => {
 						}}
 					/>
 				</section>
-				<section>
-					<label htmlFor='description'>{courseDescriptionLabelText}</label>
+				<section className='forDescription'>
+					<label htmlFor='description' className='labelForDescription'>
+						{courseDescriptionLabelText}
+					</label>
 					<textarea
 						id='description'
 						name='description'
@@ -251,11 +245,12 @@ const CreateCourse = ({ notDisplayForm }) => {
 					/>
 				</section>
 				<section className='authorsAndDuration'>
-					<section>
+					<section className='authorsAndDuration_createAuthor'>
 						<h3>Add author</h3>
 						<Input
 							id='authorName'
 							labelText={addAuthorLabelText}
+							labelClassName='labelForAuthorName'
 							placeholdetText={addAuthorPlaceholdetInputText}
 							minLength={minimumAuthorNameLength}
 							type='text'
@@ -271,15 +266,16 @@ const CreateCourse = ({ notDisplayForm }) => {
 							onClick={() => createAuthor()}
 						/>
 					</section>
-					<section>
+					<section className='authorsAndDuration_authorsList'>
 						<h3>Authors</h3>
 						{authorList}
 					</section>
-					<section>
+					<section className='authorsAndDuration_duration'>
 						<h3>Duration</h3>
 						<Input
 							id='duration'
 							labelText={courseDuratinLabelText}
+							labelClassName='labelForDuration'
 							placeholdetText={courseDurationPlaceholdetText}
 							type='number'
 							min='1'
@@ -293,7 +289,7 @@ const CreateCourse = ({ notDisplayForm }) => {
 							Duration: <span>{durationDisplay}</span> hours
 						</p>
 					</section>
-					<section>
+					<section className='authorsAndDuration_courseAuthors'>
 						<h3>Course authors</h3>
 						{displayAuthorCourse.length > 0 ? (
 							displayAuthorCourse

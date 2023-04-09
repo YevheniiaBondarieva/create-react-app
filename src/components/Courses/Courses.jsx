@@ -13,52 +13,44 @@ import styled from 'styled-components';
 import { useState } from 'react';
 
 const Main = styled.main`
-	margin: 1rem;
-	margin-top: 0px;
-	padding: 1rem;
-	border: 3px solid rgb(6, 175, 247);
-	border-radius: 1px;
 	section.coursesSection {
 		display: flex;
 		justify-content: space-between;
 	}
 	.addCourseButton {
 		margin-right: 1rem;
-		border: 2px solid rgb(191, 112, 243);
 		width: 12rem;
 		height: 2rem;
-		color: black;
-		background-color: white;
-		font-size: 16px;
-		font-weight: 500;
 	}
 `;
 
 const Courses = ({ displayForm }) => {
 	const [courses, setCourses] = useState(mockedCoursesList);
-	const filterCourses = (searchValue) =>
-		setCourses(
+	const authorsObject = mockedAuthorsList.reduce((props, author) => {
+		props[author.id] = author.name;
+		return props;
+	}, {});
+
+	const filterCourses = (searchValue) => {
+		const filteredCourses =
 			searchValue === ''
 				? mockedCoursesList
 				: mockedCoursesList.filter((item) => {
-						const regex = new RegExp(searchValue, 'i');
-						return regex.test(item.id) || regex.test(item.title);
-				  })
-		);
+						return (
+							item.id.toLowerCase().includes(searchValue) ||
+							item.title.toLowerCase().includes(searchValue)
+						);
+				  });
+		setCourses(filteredCourses);
+	};
 
 	const courseItems = courses.map((item) => {
 		const { id, authors, ...itemProps } = item;
-		const courseAuthors = [];
-		authors.forEach((authorId) => {
-			const filtered = mockedAuthorsList.find(
-				(author) => author.id === authorId
-			);
-			courseAuthors.push(filtered.name);
-		});
+		const courseAuthors = authors.map((authorId) => authorsObject[authorId]);
 		return (
 			<CourseCard
 				key={id}
-				courseAuthors={courseAuthors.toString().split(',').join(', ')}
+				courseAuthors={courseAuthors.join(', ')}
 				{...itemProps}
 			/>
 		);

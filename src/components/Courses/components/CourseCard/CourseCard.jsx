@@ -12,44 +12,39 @@ const Section = styled.section`
 	padding: 1rem;
 	padding-bottom: 0px;
 	padding-top: 0px;
-	border: 3px solid rgb(6, 197, 143);
+	border: 3px solid var(--course-border-color);
 	border-radius: 3px;
-	div:first-child {
+	div.courseTitleAndDescription {
 		flex-basis: 60%;
 		margin-right: 10px;
-		h2 {
-			font-family: Arial, sans-serif;
-			font-size: 26px;
-		}
 	}
-	div:last-child {
+	h2.courseTitleAndDescription_title {
+		font-family: 'Arial Regular';
+		font-size: var(--heading-font-size);
+	}
+	div.courseInfo {
 		flex-basis: 30%;
-		p {
-			line-height: 1.3;
-		}
-		p:first-child {
-			padding-top: 10px;
-			text-decoration: none;
-			text-overflow: ellipsis;
-			display: block;
-			overflow: hidden;
-			white-space: nowrap;
-			width: 80%;
-		}
-		.showCourse {
-			border: 2px solid rgb(191, 112, 243);
-			margin-top: 30px;
-			width: 10rem;
-			height: 2rem;
-			color: black;
-			float: center;
-			background-color: white;
-			display: block;
-			margin-left: auto;
-			margin-right: auto;
-			font-size: 16px;
-			font-weight: 500;
-		}
+	}
+	div.courseInfo > p {
+		line-height: 1.3;
+	}
+	.courseInfo_authors {
+		padding-top: 10px;
+		text-decoration: none;
+		text-overflow: ellipsis;
+		display: block;
+		overflow: hidden;
+		white-space: nowrap;
+		width: 80%;
+	}
+	.showCourse {
+		margin-top: 30px;
+		width: 10rem;
+		height: 2rem;
+		float: center;
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
 	}
 `;
 
@@ -62,12 +57,12 @@ const CourseCard = ({
 }) => {
 	return (
 		<Section>
-			<div>
-				<h2>{title}</h2>
+			<div className='courseTitleAndDescription'>
+				<h2 className='courseTitleAndDescription_title'>{title}</h2>
 				<p>{description}</p>
 			</div>
-			<div>
-				<p>
+			<div className='courseInfo'>
+				<p className='courseInfo_authors'>
 					<b>Authors: </b>
 					{courseAuthors}
 				</p>
@@ -76,7 +71,7 @@ const CourseCard = ({
 				</p>
 				<p>
 					{' '}
-					<b>Created:</b> {creationDate.split('/').join('.')}
+					<b>Created:</b> {creationDate.replace(/\//g, '.')}
 				</p>
 				<p>
 					<Button

@@ -6,43 +6,33 @@ import { HeaderButtonLogoutText } from './../../constants';
 import styled from 'styled-components';
 
 const HeaderCourses = styled.header`
-	margin: 1rem;
-	margin-bottom: 0px;
-	padding: 1rem;
-	border: 3px solid rgb(244, 106, 106);
-	border-radius: 1px;
 	nav {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		ul {
-			list-style: none;
-			display: flex;
-			align-items: center;
-			li {
-				margin-right: 30px;
-				&:last-child {
-					margin-right: 0px;
-				}
-				.header__button {
-					border: 2px solid rgb(191, 112, 243);
-					width: 4.5rem;
-					height: 1.7rem;
-					color: black;
-					background-color: white;
-					font-size: 14px;
-					font-weight: 400;
-				}
-			}
-		}
+	}
+	ul {
+		list-style: none;
+		display: flex;
+		align-items: center;
+	}
+	li {
+		margin-right: 30px;
+	}
+	.logout {
+		margin-right: 0px;
+	}
+	.header__button {
+		width: 5rem;
+		height: 1.7rem;
 	}
 `;
 
 const HeaderUserInfo = styled.a`
 	text-decoration: none;
-	color: black;
+	color: var(--font-color);
 	font-weight: 600;
-	font-size: 18px;
+	font-size: var(--username-link-font-size);
 `;
 
 const Header = () => {
@@ -56,7 +46,7 @@ const Header = () => {
 					<li>
 						<HeaderUserInfo href='/'>Dave</HeaderUserInfo>
 					</li>
-					<li>
+					<li className='logout'>
 						<a href='/logout'>
 							<Button
 								buttonType='button'

@@ -14,28 +14,25 @@ const Form = styled.form`
 	flex-basis: 60%;
 	#searchInput {
 		flex-basis: 90%;
-		border: 2px solid rgb(232, 187, 10);
 		height: 1.7rem;
-		color: black;
-		background-color: white;
-		font-size: 16px;
-		font-weight: 500;
 		margin-left: 1rem;
 	}
 	.searchButton {
-		border: 2px solid rgb(191, 112, 243);
 		width: 7rem;
 		height: 2rem;
-		color: black;
-		background-color: white;
-		font-size: 16px;
-		font-weight: 500;
 		margin-left: 1rem;
 	}
 `;
 
 const SearchBar = ({ filterCourses }) => {
 	const [searchValue, setSearchValue] = useState('');
+
+	const handleKeyPress = (e) => {
+		if (e.key === 'Enter') {
+			e.preventDefault();
+			filterCourses(searchValue);
+		}
+	};
 
 	useEffect(() => {
 		if (searchValue === '') {
@@ -50,6 +47,7 @@ const SearchBar = ({ filterCourses }) => {
 				id='searchInput'
 				placeholdetText={searchPlaceholdetText}
 				onChange={(e) => setSearchValue(e.target.value)}
+				onKeyPress={handleKeyPress}
 			/>
 			<Button
 				buttonType='button'
