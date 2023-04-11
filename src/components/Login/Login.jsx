@@ -14,13 +14,14 @@ import { useState } from 'react';
 
 import PropTypes from 'prop-types';
 
-import { Form } from './Login.style';
+import { Form } from './../../common';
 
 const Login = ({ handleLogin }) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [error, setError] = useState('');
 
-	const navigate = useNavigate(); // отримуємо navigate
+	const navigate = useNavigate();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -29,32 +30,43 @@ const Login = ({ handleLogin }) => {
 			email,
 			password,
 		};
-
-		const response = await fetch('http://localhost:4000/login', {
-			method: 'POST',
-			body: JSON.stringify(loginUser),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		});
-		const loginResult = await response.json();
-		if (loginResult.successful) {
-			const token = loginResult.result;
-			const name = loginResult.user.name;
-			handleLogin(token, name);
-			navigate('/courses', { replace: true });
+		try {
+			const response = await fetch('http://localhost:4000/login', {
+				method: 'POST',
+				body: JSON.stringify(loginUser),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
+			if (!response.ok) {
+				throw new Error('Unable to log in.');
+			}
+			const loginResult = await response.json();
+			if (loginResult.successful) {
+				const token = loginResult.result;
+				const name = loginResult.user.name;
+				handleLogin(token, name);
+				navigate('/courses', { replace: true });
+			} else {
+				throw new Error('Unable to log in.');
+			}
+		} catch (error) {
+			console.error(error);
+			setError(
+				'Incorrect login credentials. Please verify your email and password.'
+			);
 		}
 	};
 	return (
 		<Form onSubmit={handleSubmit}>
-			<h2 className='login'>Login</h2>
+			<h2 className='auth'>Login</h2>
 			<Input
 				id='registrationEmail'
 				labelText={loginEmailLabelText}
 				placeholdetText={loginEmailPlaceholdetText}
 				type='text'
-				className='login'
-				labelClassName='login'
+				className='inputAuth'
+				labelClassName='labelAuth'
 				onChange={(e) => setEmail(e.target.value)}
 				required
 			/>
@@ -62,21 +74,21 @@ const Login = ({ handleLogin }) => {
 				id='registrationPassword'
 				labelText={loginPasswordLabelText}
 				placeholdetText={loginPasswordPlaceholdetText}
-				type='text'
-				className='login'
-				labelClassName='login'
+				type='password'
+				className='inputAuth'
+				labelClassName='labelAuth'
 				onChange={(e) => setPassword(e.target.value)}
 				required
 			/>
 			<Button
 				buttonType='submit'
-				className='loginButton'
+				className='button'
 				buttonText={loginButtonText}
 			/>
-			<p className='login'>
-				If you not have an account you can
-				<Link to='/registration' className='registartion'>
-					{' '}
+			{error && <p className='auth'>{error}</p>}
+			<p className='auth'>
+				If you not have an account you can &nbsp;
+				<Link to='/registration' className='auth'>
 					Registration
 				</Link>
 			</p>

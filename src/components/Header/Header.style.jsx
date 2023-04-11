@@ -21,11 +21,10 @@ export const HeaderCourses = styled.header`
 		width: 5rem;
 		height: 1.7rem;
 	}
-`;
-
-export const HeaderUserInfo = styled.a`
-	text-decoration: none;
-	color: var(--font-color);
-	font-weight: 600;
-	font-size: var(--username-link-font-size);
+	.headerUserInfo {
+		text-decoration: none;
+		color: var(--black-color);
+		font-weight: 600;
+		font-size: var(--18px-font-size);
+	}
 `;

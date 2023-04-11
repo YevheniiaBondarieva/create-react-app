@@ -14,7 +14,11 @@ import { Article } from './CourseInfo.style';
 
 const CourseInfo = () => {
 	const { courseId } = useParams();
-	const authorsArray = [];
+
+	const authorsObject = mockedAuthorsList.reduce((props, author) => {
+		props[author.id] = author.name;
+		return props;
+	}, {});
 
 	const course = mockedCoursesList.find((course) => course.id === courseId);
 
@@ -28,10 +32,7 @@ const CourseInfo = () => {
 
 	const { id, title, description, creationDate, duration, authors } = course;
 
-	authors.forEach((authorId) => {
-		const { name } = mockedAuthorsList.find((author) => author.id === authorId);
-		authorsArray.push(name);
-	});
+	const authorsArray = authors.map((authorId) => authorsObject[authorId]);
 
 	return (
 		<Article>
@@ -42,7 +43,7 @@ const CourseInfo = () => {
 					className='backToCourses'
 				/>
 			</Link>
-			<h2 className='courseInfo'>{title}</h2>
+			<h2 className='courseInfoTitle'>{title}</h2>
 			<section className='courseInfo'>
 				<p className='courseDescription'>{description}</p>
 				<section className='courseDetails'>
@@ -56,7 +57,7 @@ const CourseInfo = () => {
 						<b>Created: </b> {creationDate}
 					</p>
 					<p>
-						<b>Authors:</b> {authorsArray.toString().split(',').join(', ')}
+						<b>Authors:</b> {authorsArray.join(', ')}
 					</p>
 				</section>
 			</section>

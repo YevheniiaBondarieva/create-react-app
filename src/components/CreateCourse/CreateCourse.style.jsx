@@ -1,14 +1,12 @@
 import styled from 'styled-components';
 
 export const Main = styled.main`
-	.createCourse,
-	.deleteAuthor,
-	.addAuthor {
+	.button {
 		float: right;
 		width: 8rem;
 		height: 1.7rem;
 	}
-	input.courseTitle {
+	.input {
 		height: 1.5rem;
 		padding-left: 10px;
 		margin-bottom: 10px;
@@ -17,22 +15,18 @@ export const Main = styled.main`
 	section.forDescription {
 		display: block;
 	}
-	.labelForTitle {
+	.label {
 		display: block;
 		margin-bottom: 7px;
 	}
-	.labelForDescription {
-		display: block;
-		margin-bottom: 5px;
-	}
-	textarea {
-		width: 97.7%;
+	.textarea {
+		width: 80vw;
 		padding-left: 1rem;
 		padding-top: 1rem;
-		border: 2px solid var(--textarea-border-color);
+		border: 2px solid var(--orange-color);
 	}
 	section.authorsAndDuration {
-		border: 2px solid black;
+		border: 2px solid var(--black-color);
 		margin-top: 10px;
 		display: grid;
 		padding: 1rem;
@@ -41,18 +35,12 @@ export const Main = styled.main`
 	h3.authorsAndDuration {
 		text-align: center;
 	}
-	.labelForAuthorName,
-	.labelForDuration {
-		display: block;
-		margin-bottom: 7px;
-	}
+
 	input.author,
 	input.courseDuration {
 		display: block;
-		height: 1.5rem;
-		padding-left: 10px;
-		margin-bottom: 10px;
-		width: 85%;
+		width: 40vw;
+		margin-right: 3rem;
 	}
 	.createAuthor {
 		width: 8rem;
@@ -66,7 +54,7 @@ export const Main = styled.main`
 	}
 	span.courseDuration {
 		font-weight: bold;
-		font-size: var(--heading-font-size);
+		font-size: var(--24px-font-size);
 	}
 	p.courseAuthors,
 	p.authorsList {

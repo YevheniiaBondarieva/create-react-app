@@ -7,15 +7,15 @@ export const Section = styled.section`
 	padding: 1rem;
 	padding-bottom: 0px;
 	padding-top: 0px;
-	border: 3px solid var(--course-border-color);
+	border: 3px solid var(--spring-green-color);
 	border-radius: 3px;
 	div.courseTitleAndDescription {
 		flex-basis: 60%;
 		margin-right: 10px;
 	}
 	h2.courseTitleAndDescription {
-		font-family: 'Arial Regular';
-		font-size: var(--heading-font-size);
+		font-family: var(--arial-font-face);
+		font-size: var(--24px-font-size);
 	}
 	div.courseInfo {
 		flex-basis: 30%;

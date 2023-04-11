@@ -1,26 +1,22 @@
 import styled from 'styled-components';
 
 export const Article = styled.article`
-	margin: 1rem;
 	margin-top: 20px;
-	padding: 1rem;
-	border: 3px solid rgb(6, 175, 247);
-	border-radius: 1px;
-	button.backToCourses {
+	.backToCourses {
 		border: none;
 		background: none;
 	}
-	h2.courseInfo {
+	.courseInfoTitle {
 		text-align: center;
 	}
-	section.courseInfo {
+	.courseInfo {
 		display: flex;
 		justify-content: space-between;
 	}
-	p.courseDescription {
+	.courseDescription {
 		flex-basis: 50%;
 	}
-	section.courseDetails {
+	.courseDetails {
 		flex-basis: 30%;
 	}
 `;

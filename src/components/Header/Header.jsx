@@ -3,7 +3,7 @@ import { Button } from '../../common';
 
 import { HeaderButtonLogoutText } from './../../constants';
 
-import { HeaderUserInfo, HeaderCourses } from './Header.style';
+import { HeaderCourses } from './Header.style';
 
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -20,7 +20,9 @@ const Header = ({ isLoggedIn, userName, handleLogout }) => {
 				{isLoggedIn ? (
 					<ul className='userInfo'>
 						<li className='userName'>
-							<HeaderUserInfo href='/'>{userName}</HeaderUserInfo>
+							<a href='/' className='headerUserInfo'>
+								{userName}
+							</a>
 						</li>
 						<li className='logout'>
 							<Button

@@ -14,12 +14,13 @@ import {
 	registrationButtonText,
 } from './../../constants';
 
-import { Form } from './Registration.style';
+import { Form } from './../../common';
 
 const Registration = () => {
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [error, setError] = useState('');
 
 	const navigate = useNavigate();
 
@@ -31,28 +32,37 @@ const Registration = () => {
 			password,
 			email,
 		};
-
-		const response = await fetch('http://localhost:4000/register', {
-			method: 'POST',
-			body: JSON.stringify(newUser),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		});
-		const result = await response.json();
-		if (result.successful) {
-			navigate('/login');
+		try {
+			const response = await fetch('http://localhost:4000/register', {
+				method: 'POST',
+				body: JSON.stringify(newUser),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
+			if (!response.ok) {
+				throw new Error('Unable to register.');
+			}
+			const result = await response.json();
+			if (result.successful) {
+				navigate('/login');
+			} else {
+				throw new Error('Unable to register.');
+			}
+		} catch (error) {
+			console.error(error);
+			setError('Unable to register. Please try again later.');
 		}
 	};
 
 	return (
 		<Form onSubmit={handleSubmit}>
-			<h2 className='registration'>Registration</h2>
+			<h2 className='auth'>Registration</h2>
 			<Input
 				id='registrationName'
 				labelText={registrationNameLabelText}
-				className='registation'
-				labelClassName='registration'
+				className='inputAuth'
+				labelClassName='labelAuth'
 				placeholdetText={registrationNamePlaceholdetText}
 				type='text'
 				onChange={(e) => setName(e.target.value)}
@@ -62,9 +72,9 @@ const Registration = () => {
 				id='registrationEmail'
 				labelText={registrationEmailLabelText}
 				placeholdetText={registrationEmailPlaceholdetText}
-				type='text'
-				className='registation'
-				labelClassName='registration'
+				type='email'
+				className='inputAuth'
+				labelClassName='labelAuth'
 				onChange={(e) => setEmail(e.target.value)}
 				required
 			/>
@@ -72,21 +82,22 @@ const Registration = () => {
 				id='registrationPassword'
 				labelText={registrationPasswordLabelText}
 				placeholdetText={registrationPasswordPlaceholdetText}
-				type='text'
-				className='registation'
-				labelClassName='registration'
+				type='password'
+				className='inputAuth'
+				labelClassName='labelAuth'
 				minLength='6'
 				onChange={(e) => setPassword(e.target.value)}
 				required
 			/>
 			<Button
-				className='registrationButton'
+				className='button'
 				buttonText={registrationButtonText}
 				buttonType='submit'
 			/>
-			<p className='registation'>
-				If you have an account you can{' '}
-				<Link to='/login' className='loginLink'>
+			{error && <p className='auth'>{error}</p>}
+			<p className='auth'>
+				If you have an account you can &nbsp;
+				<Link to='/login' className='auth'>
 					Login
 				</Link>
 			</p>

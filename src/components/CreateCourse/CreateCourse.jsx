@@ -63,7 +63,7 @@ const CreateCourse = () => {
 				title: courseTitle,
 				description: courseDescription,
 				creationDate: dateGeneratop(),
-				duration: +courseDuration,
+				duration: Number(courseDuration),
 				authors: courseAuthors.map((item) => item['id']),
 			};
 			mockedCoursesList.push(newCourse);
@@ -80,7 +80,7 @@ const CreateCourse = () => {
 				<p className='authorsList'>{name}</p>
 				<Button
 					buttonType='button'
-					className='addAuthor'
+					className='addAuthor button'
 					buttonText={addAuthorButtonText}
 					onClick={() => addAuthor(author)}
 				/>
@@ -106,7 +106,7 @@ const CreateCourse = () => {
 				<p className='courseAuthors'>{author.name}</p>
 				<Button
 					buttonType='button'
-					className='deleteAuthor'
+					className='deleteAuthor button'
 					buttonText={deleteAuthorButtonText}
 					onClick={() => deleteAuthor(author)}
 				/>
@@ -131,8 +131,8 @@ const CreateCourse = () => {
 					<Input
 						id='title'
 						labelText={courseTitleLabelText}
-						labelClassName='labelForTitle'
-						className='courseTitle'
+						labelClassName='label'
+						className='courseTitle input'
 						placeholdetText={courseTitlePlaceholdetText}
 						type='text'
 						onChange={(e) => setCourseTitle(e.target.value)}
@@ -140,7 +140,7 @@ const CreateCourse = () => {
 					/>
 					<Button
 						buttonType='button'
-						className='createCourse'
+						className='createCourse button'
 						buttonText={createCourseButtonText}
 						onClick={() => {
 							createCourse();
@@ -148,13 +148,14 @@ const CreateCourse = () => {
 					/>
 				</section>
 				<section className='forDescription'>
-					<label htmlFor='description' className='labelForDescription'>
+					<label htmlFor='description' className='label'>
 						{courseDescriptionLabelText}
 					</label>
 					<textarea
 						id='description'
 						name='description'
 						rows='5'
+						className='textarea'
 						minLength={minimumCourseDescriptionLength}
 						placeholder={courseDescriptionPlaceholderText}
 						onChange={(e) => setCourseDescription(e.target.value)}
@@ -166,9 +167,9 @@ const CreateCourse = () => {
 						<h3 className='authorsAndDuration'>Add author</h3>
 						<Input
 							id='authorName'
-							className='author'
+							className='author input'
 							labelText={addAuthorLabelText}
-							labelClassName='labelForAuthorName'
+							labelClassName='label'
 							placeholdetText={addAuthorPlaceholdetInputText}
 							minLength={minimumAuthorNameLength}
 							type='text'
@@ -193,8 +194,8 @@ const CreateCourse = () => {
 						<Input
 							id='duration'
 							labelText={courseDuratinLabelText}
-							labelClassName='labelForDuration'
-							className='courseDuration'
+							labelClassName='label'
+							className='courseDuration input'
 							placeholdetText={courseDurationPlaceholdetText}
 							type='number'
 							min='1'
