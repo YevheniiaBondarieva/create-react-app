@@ -1,26 +1,25 @@
-import {
-	backToCoursesButtonText,
-	mockedCoursesList,
-	mockedAuthorsList,
-} from './../../constants';
+import { backToCoursesButtonText } from './../../constants';
 
 import { pipeDuration } from '../../helpers';
-
 import { Button } from '../../common';
+import * as selectors from './../../store/selectors';
 
 import { Link, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import { Article } from './CourseInfo.style';
 
 const CourseInfo = () => {
 	const { courseId } = useParams();
+	const allCourses = useSelector(selectors.courses);
+	const allAuthors = useSelector(selectors.authors);
 
-	const authorsObject = mockedAuthorsList.reduce((props, author) => {
+	const authorsObject = allAuthors.reduce((props, author) => {
 		props[author.id] = author.name;
 		return props;
 	}, {});
 
-	const course = mockedCoursesList.find((course) => course.id === courseId);
+	const course = allCourses?.find((course) => course.id === courseId);
 
 	if (!course) {
 		return (

@@ -1,11 +1,16 @@
 import { Button } from '../../../../common';
 import { pipeDuration } from '../../../../helpers';
-
-import { showCourseButtonText } from './../../../../constants';
+import {
+	showCourseButtonText,
+	updateCourseButtonText,
+	deleteCourseButtonText,
+} from './../../../../constants';
+import { deleteCourse } from './../../../../store/courses/actionCreators';
 
 import { Section } from './CourseCard.style';
 
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 const CourseCard = ({
@@ -16,6 +21,12 @@ const CourseCard = ({
 	duration,
 	courseAuthors,
 }) => {
+	const dispatch = useDispatch();
+
+	function deleteCourseItem(courseId) {
+		dispatch(deleteCourse(courseId));
+	}
+
 	return (
 		<Section>
 			<div className='courseTitleAndDescription'>
@@ -42,6 +53,17 @@ const CourseCard = ({
 							buttonText={showCourseButtonText}
 						/>
 					</Link>
+					<Button
+						buttonType='button'
+						className='updateCourse'
+						buttonText={updateCourseButtonText}
+					/>
+					<Button
+						buttonType='button'
+						className='deleteCourse'
+						buttonText={deleteCourseButtonText}
+						onClick={() => deleteCourseItem(id)}
+					/>
 				</p>
 			</div>
 		</Section>

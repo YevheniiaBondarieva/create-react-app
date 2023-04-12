@@ -14,6 +14,7 @@ import {
 	registrationButtonText,
 } from './../../constants';
 
+import * as services from './../../store/services';
 import { Form } from './../../common';
 
 const Registration = () => {
@@ -33,17 +34,7 @@ const Registration = () => {
 			email,
 		};
 		try {
-			const response = await fetch('http://localhost:4000/register', {
-				method: 'POST',
-				body: JSON.stringify(newUser),
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			});
-			if (!response.ok) {
-				throw new Error('Unable to register.');
-			}
-			const result = await response.json();
+			const result = await services.registration(newUser);
 			if (result.successful) {
 				navigate('/login');
 			} else {
@@ -86,6 +77,7 @@ const Registration = () => {
 				className='inputAuth'
 				labelClassName='labelAuth'
 				minLength='6'
+				autoComplete='on'
 				onChange={(e) => setPassword(e.target.value)}
 				required
 			/>

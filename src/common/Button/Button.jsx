@@ -20,7 +20,11 @@ const Button = ({
 };
 
 Button.propTypes = {
-	buttonText: PropTypes.string,
+	buttonText: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.oneOf(['img', 'svg']),
+		PropTypes.object,
+	]),
 	buttonType: PropTypes.string,
 	onClick: PropTypes.func,
 	className: PropTypes.string,

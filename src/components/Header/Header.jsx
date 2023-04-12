@@ -6,11 +6,17 @@ import { HeaderButtonLogoutText } from './../../constants';
 import { HeaderCourses } from './Header.style';
 
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import PropTypes from 'prop-types';
 
-const Header = ({ isLoggedIn, userName, handleLogout }) => {
+import { logout } from '../../store/user/actionCreators';
+import { getUserName } from '../../store/selectors';
+
+const Header = ({ isLoggedIn, handleLogout }) => {
 	const navigate = useNavigate();
+	const userName = useSelector(getUserName);
+	const dispatch = useDispatch();
 	return (
 		<HeaderCourses>
 			<nav className='pageNavigation'>
@@ -31,6 +37,7 @@ const Header = ({ isLoggedIn, userName, handleLogout }) => {
 								buttonText={HeaderButtonLogoutText}
 								onClick={() => {
 									handleLogout();
+									dispatch(logout());
 									navigate('/login');
 								}}
 							/>
@@ -44,7 +51,6 @@ const Header = ({ isLoggedIn, userName, handleLogout }) => {
 
 Header.propTypes = {
 	isLoggedIn: PropTypes.bool.isRequired,
-	userName: PropTypes.string,
 	handleLogout: PropTypes.func.isRequired,
 };
 

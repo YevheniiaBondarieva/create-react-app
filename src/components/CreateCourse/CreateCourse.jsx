@@ -2,8 +2,6 @@ import { Button, Input } from '../../common';
 import { dateGeneratop, pipeDuration } from '../../helpers';
 
 import {
-	mockedAuthorsList,
-	mockedCoursesList,
 	createCourseButtonText,
 	createAuthorButtonText,
 	deleteAuthorButtonText,
@@ -20,16 +18,21 @@ import {
 	minimumCourseDescriptionLength,
 	minimumAuthorNameLength,
 } from './../../constants';
+import * as selectors from './../../store/selectors';
+import { addCourse } from '../../store/courses/actionCreators';
+import { addAuthor } from '../../store/authors/actionCreators';
 
 import { v4 as uuidv4 } from 'uuid';
 
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { Main } from './CreateCourse.style';
 
-import { useNavigate } from 'react-router-dom';
-
 const CreateCourse = () => {
+	const dispatch = useDispatch();
+	const allAuthors = useSelector(selectors.authors);
 	const [courseTitle, setCourseTitle] = useState('');
 	const [courseDescription, setCourseDescription] = useState('');
 	const [courseAuthors, setCourseAuthor] = useState([]);
@@ -41,7 +44,8 @@ const CreateCourse = () => {
 	const [newAuthorName, setNewAuthorName] = useState('');
 
 	useEffect(() => {
-		setAuthors([...mockedAuthorsList]);
+		setAuthors([...allAuthors]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const navigate = useNavigate();
@@ -66,7 +70,7 @@ const CreateCourse = () => {
 				duration: Number(courseDuration),
 				authors: courseAuthors.map((item) => item['id']),
 			};
-			mockedCoursesList.push(newCourse);
+			dispatch(addCourse(newCourse));
 			navigate('/courses');
 		} else {
 			window.alert('Please, fill in all fields');
@@ -82,7 +86,7 @@ const CreateCourse = () => {
 					buttonType='button'
 					className='addAuthor button'
 					buttonText={addAuthorButtonText}
-					onClick={() => addAuthor(author)}
+					onClick={() => addNewAuthor(author)}
 				/>
 			</div>
 		);
@@ -94,7 +98,7 @@ const CreateCourse = () => {
 				id: uuidv4(),
 				name: newAuthorName,
 			};
-			mockedAuthorsList.push(newAuthor);
+			dispatch(addAuthor(newAuthor));
 			authors.push(newAuthor);
 			setNewAuthorName('');
 		}
@@ -114,7 +118,7 @@ const CreateCourse = () => {
 		);
 	});
 
-	const addAuthor = (author) => {
+	const addNewAuthor = (author) => {
 		setCourseAuthor([...courseAuthors, author]);
 		setAuthors(authors.filter(({ id }) => id !== author.id));
 	};
@@ -206,8 +210,8 @@ const CreateCourse = () => {
 							}}
 						/>
 						<p className='courseDuration'>
-							Duration:{' '}
-							<span className='courseDuration'>{durationDisplay}</span> hours
+							Duration:<span className='courseDuration'>{durationDisplay}</span>{' '}
+							hours
 						</p>
 					</section>
 					<section>
