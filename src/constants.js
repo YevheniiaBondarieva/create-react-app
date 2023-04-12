@@ -23,6 +23,22 @@ export const searchPlaceholdetText = 'Enter course name...';
 
 export const showCourseButtonText = 'Show course';
 
+export const registrationNameLabelText = 'Name';
+export const registrationNamePlaceholdetText = 'Enter name';
+export const registrationEmailLabelText = 'Email';
+export const registrationEmailPlaceholdetText = 'Enter email';
+export const registrationPasswordLabelText = 'Password';
+export const registrationPasswordPlaceholdetText = 'Enter password';
+export const registrationButtonText = 'Registration';
+
+export const loginEmailLabelText = 'Email';
+export const loginEmailPlaceholdetText = 'Enter email';
+export const loginPasswordLabelText = 'Password';
+export const loginPasswordPlaceholdetText = 'Enter password';
+export const loginButtonText = 'Login';
+
+export const backToCoursesButtonText = '< Back to courses';
+
 export const mockedCoursesList = [
 	{
 		id: 'de5aaa59-90f5-4dbc-b8a9-aaf205c551ba',

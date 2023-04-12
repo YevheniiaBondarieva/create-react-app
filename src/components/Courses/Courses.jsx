@@ -8,23 +8,13 @@ import {
 	addCourseButtonText,
 } from './../../constants';
 
-import styled from 'styled-components';
-
 import { useState } from 'react';
 
-const Main = styled.main`
-	section.coursesSection {
-		display: flex;
-		justify-content: space-between;
-	}
-	.addCourseButton {
-		margin-right: 1rem;
-		width: 12rem;
-		height: 2rem;
-	}
-`;
+import { Main } from './Courses.style';
 
-const Courses = ({ displayForm }) => {
+import { Link } from 'react-router-dom';
+
+const Courses = () => {
 	const [courses, setCourses] = useState(mockedCoursesList);
 	const authorsObject = mockedAuthorsList.reduce((props, author) => {
 		props[author.id] = author.name;
@@ -50,6 +40,7 @@ const Courses = ({ displayForm }) => {
 		return (
 			<CourseCard
 				key={id}
+				id={id}
 				courseAuthors={courseAuthors.join(', ')}
 				{...itemProps}
 			/>
@@ -60,12 +51,13 @@ const Courses = ({ displayForm }) => {
 		<Main>
 			<section className='coursesSection'>
 				<SearchBar filterCourses={filterCourses} />
-				<Button
-					buttonType='button'
-					buttonText={addCourseButtonText}
-					className='addCourseButton'
-					onClick={displayForm}
-				/>
+				<Link to='/courses/add'>
+					<Button
+						buttonType='button'
+						buttonText={addCourseButtonText}
+						className='addCourseButton'
+					/>
+				</Link>
 			</section>
 			{courseItems}
 		</Main>

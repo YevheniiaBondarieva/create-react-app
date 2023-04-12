@@ -1,5 +1,3 @@
-import styled from 'styled-components';
-
 import { Button, Input } from '../../common';
 import { dateGeneratop, pipeDuration } from '../../helpers';
 
@@ -27,95 +25,11 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { useState, useEffect } from 'react';
 
-const Main = styled.main`
-	.createCourse,
-	.createAuthor,
-	.deleteAuthor,
-	.addAuthor {
-		float: right;
-		width: 8rem;
-		height: 1.7rem;
-	}
-	#courseTitle {
-		height: 1.5rem;
-		padding-left: 10px;
-		margin-bottom: 10px;
-	}
-	section.courseTitleInputAndCreateCourseButton,
-	section.forDescription {
-		display: block;
-	}
-	.labelForTitle {
-		display: block;
-		margin-bottom: 7px;
-	}
-	.labelForDescription {
-		display: block;
-		margin-bottom: 5px;
-	}
-	textarea {
-		width: 97.7%;
-		padding-left: 1rem;
-		padding-top: 1rem;
-		border: 2px solid var(--textarea-border-color);
-	}
-	section.authorsAndDuration {
-		border: 2px solid black;
-		margin-top: 10px;
-		display: grid;
-		padding: 1rem;
-		grid-template-columns: 1fr 1fr;
-	}
-	section.authorsAndDuration_createAuthor > h3,
-	section.authorsAndDuration_authorsList > h3,
-	section.authorsAndDuration_duration > h3,
-	section.authorsAndDuration_courseAuthors > h3 {
-		text-align: center;
-	}
-	.labelForAuthorName,
-	.labelForDuration {
-		display: block;
-		margin-bottom: 7px;
-	}
-	#authorName,
-	#duration {
-		display: block;
-		height: 1.5rem;
-		padding-left: 10px;
-		margin-bottom: 10px;
-		width: 80%;
-	}
-	.createAuthor {
-		display: block;
-		float: none;
-	}
+import { Main } from './CreateCourse.style';
 
-	#duration + p {
-		font-size: 24px;
-	}
-	#duration + p > span {
-		font-weight: bold;
-		font-size: var(--heading-font-size);
-	}
-	section.authorsAndDuration_authorsList > div > p,
-	section.authorsAndDuration_authorsList > div > p,
-	section.authorsAndDuration_courseAuthors > div > p,
-	section.authorsAndDuration_courseAuthors > div > p {
-		display: inline-block;
-	}
-	section.authorsAndDuration_authorsList > div > button,
-	section.authorsAndDuration_authorsList > div > button,
-	section.authorsAndDuration_courseAuthors > div > button,
-	section.authorsAndDuration_courseAuthors > div > button {
-		margin-top: 10px;
-		margin-right: 20%;
-	}
-	.listIsEmpty {
-		text-align: center;
-	}
-`;
+import { useNavigate } from 'react-router-dom';
 
-const CreateCourse = ({ hideForm }) => {
+const CreateCourse = () => {
 	const [courseTitle, setCourseTitle] = useState('');
 	const [courseDescription, setCourseDescription] = useState('');
 	const [courseAuthors, setCourseAuthor] = useState([]);
@@ -129,6 +43,8 @@ const CreateCourse = ({ hideForm }) => {
 	useEffect(() => {
 		setAuthors([...mockedAuthorsList]);
 	}, []);
+
+	const navigate = useNavigate();
 
 	const courseTitleExists = Boolean(courseTitle);
 	const validCourseDescription = courseDescription.length >= 2;
@@ -147,11 +63,11 @@ const CreateCourse = ({ hideForm }) => {
 				title: courseTitle,
 				description: courseDescription,
 				creationDate: dateGeneratop(),
-				duration: courseDuration,
+				duration: Number(courseDuration),
 				authors: courseAuthors.map((item) => item['id']),
 			};
 			mockedCoursesList.push(newCourse);
-			hideForm();
+			navigate('/courses');
 		} else {
 			window.alert('Please, fill in all fields');
 		}
@@ -160,11 +76,11 @@ const CreateCourse = ({ hideForm }) => {
 	const authorList = authors.map((author) => {
 		const { id, name } = author;
 		return (
-			<div id={id} key={id}>
-				<p>{name}</p>
+			<div id={id} key={id} className='authorsList'>
+				<p className='authorsList'>{name}</p>
 				<Button
 					buttonType='button'
-					className='addAuthor'
+					className='addAuthor button'
 					buttonText={addAuthorButtonText}
 					onClick={() => addAuthor(author)}
 				/>
@@ -186,11 +102,11 @@ const CreateCourse = ({ hideForm }) => {
 
 	const displayAuthorCourse = courseAuthors.map((author) => {
 		return (
-			<div id={author.id} key={author.id}>
-				<p>{author.name}</p>
+			<div id={author.id} key={author.id} className='courseAuthors'>
+				<p className='courseAuthors'>{author.name}</p>
 				<Button
 					buttonType='button'
-					className='deleteAuthor'
+					className='deleteAuthor button'
 					buttonText={deleteAuthorButtonText}
 					onClick={() => deleteAuthor(author)}
 				/>
@@ -213,9 +129,10 @@ const CreateCourse = ({ hideForm }) => {
 			<form>
 				<section className='courseTitleInputAndCreateCourseButton'>
 					<Input
-						id='courseTitle'
+						id='title'
 						labelText={courseTitleLabelText}
-						labelClassName='labelForTitle'
+						labelClassName='label'
+						className='courseTitle input'
 						placeholdetText={courseTitlePlaceholdetText}
 						type='text'
 						onChange={(e) => setCourseTitle(e.target.value)}
@@ -223,7 +140,7 @@ const CreateCourse = ({ hideForm }) => {
 					/>
 					<Button
 						buttonType='button'
-						className='createCourse'
+						className='createCourse button'
 						buttonText={createCourseButtonText}
 						onClick={() => {
 							createCourse();
@@ -231,13 +148,14 @@ const CreateCourse = ({ hideForm }) => {
 					/>
 				</section>
 				<section className='forDescription'>
-					<label htmlFor='description' className='labelForDescription'>
+					<label htmlFor='description' className='label'>
 						{courseDescriptionLabelText}
 					</label>
 					<textarea
 						id='description'
 						name='description'
 						rows='5'
+						className='textarea'
 						minLength={minimumCourseDescriptionLength}
 						placeholder={courseDescriptionPlaceholderText}
 						onChange={(e) => setCourseDescription(e.target.value)}
@@ -245,12 +163,13 @@ const CreateCourse = ({ hideForm }) => {
 					/>
 				</section>
 				<section className='authorsAndDuration'>
-					<section className='authorsAndDuration_createAuthor'>
-						<h3>Add author</h3>
+					<section>
+						<h3 className='authorsAndDuration'>Add author</h3>
 						<Input
 							id='authorName'
+							className='author input'
 							labelText={addAuthorLabelText}
-							labelClassName='labelForAuthorName'
+							labelClassName='label'
 							placeholdetText={addAuthorPlaceholdetInputText}
 							minLength={minimumAuthorNameLength}
 							type='text'
@@ -266,16 +185,17 @@ const CreateCourse = ({ hideForm }) => {
 							onClick={() => createAuthor()}
 						/>
 					</section>
-					<section className='authorsAndDuration_authorsList'>
-						<h3>Authors</h3>
+					<section>
+						<h3 className='authorsAndDuration'>Authors</h3>
 						{authorList}
 					</section>
-					<section className='authorsAndDuration_duration'>
-						<h3>Duration</h3>
+					<section>
+						<h3 className='authorsAndDuration'>Duration</h3>
 						<Input
 							id='duration'
 							labelText={courseDuratinLabelText}
-							labelClassName='labelForDuration'
+							labelClassName='label'
+							className='courseDuration input'
 							placeholdetText={courseDurationPlaceholdetText}
 							type='number'
 							min='1'
@@ -285,12 +205,13 @@ const CreateCourse = ({ hideForm }) => {
 								setCourseDuration(e.target.value);
 							}}
 						/>
-						<p>
-							Duration: <span>{durationDisplay}</span> hours
+						<p className='courseDuration'>
+							Duration:{' '}
+							<span className='courseDuration'>{durationDisplay}</span> hours
 						</p>
 					</section>
-					<section className='authorsAndDuration_courseAuthors'>
-						<h3>Course authors</h3>
+					<section>
+						<h3 className='authorsAndDuration'>Course authors</h3>
 						{displayAuthorCourse.length > 0 ? (
 							displayAuthorCourse
 						) : (
