@@ -5,24 +5,10 @@ import {
 	searchButtonText,
 } from './../../../../constants';
 
-import styled from 'styled-components';
-
 import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
-const Form = styled.form`
-	display: flex;
-	flex-basis: 60%;
-	#searchInput {
-		flex-basis: 90%;
-		height: 1.7rem;
-		margin-left: 1rem;
-	}
-	.searchButton {
-		width: 7rem;
-		height: 2rem;
-		margin-left: 1rem;
-	}
-`;
+import { Form } from './SearchBar.style';
 
 const SearchBar = ({ filterCourses }) => {
 	const [searchValue, setSearchValue] = useState('');
@@ -44,7 +30,8 @@ const SearchBar = ({ filterCourses }) => {
 		<Form>
 			<Input
 				type='text'
-				id='searchInput'
+				id='search'
+				className='searchInput'
 				placeholdetText={searchPlaceholdetText}
 				onChange={(e) => setSearchValue(e.target.value)}
 				onKeyPress={handleKeyPress}
@@ -57,6 +44,10 @@ const SearchBar = ({ filterCourses }) => {
 			/>
 		</Form>
 	);
+};
+
+SearchBar.propTypes = {
+	filterCourses: PropTypes.func.isRequired,
 };
 
 export default SearchBar;
