@@ -1,6 +1,6 @@
 import { ADD_AUTHOR, GET_AUTHORS } from './actionTypes';
 
-const authorsInitialState = []; // default value - empty array. After success getting authors from API - array of authors.
+const authorsInitialState = [];
 
 const authorsReducer = (state = authorsInitialState, action) => {
 	switch (action.type) {

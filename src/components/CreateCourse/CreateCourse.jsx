@@ -210,8 +210,9 @@ const CreateCourse = () => {
 							}}
 						/>
 						<p className='courseDuration'>
-							Duration:<span className='courseDuration'>{durationDisplay}</span>{' '}
-							hours
+							Duration:&nbsp;
+							<span className='courseDuration'>{durationDisplay}</span>
+							&nbsp;hours
 						</p>
 					</section>
 					<section>

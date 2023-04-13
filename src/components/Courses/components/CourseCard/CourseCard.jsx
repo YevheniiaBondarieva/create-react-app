@@ -1,10 +1,8 @@
 import { Button } from '../../../../common';
 import { pipeDuration } from '../../../../helpers';
-import {
-	showCourseButtonText,
-	updateCourseButtonText,
-	deleteCourseButtonText,
-} from './../../../../constants';
+import { showCourseButtonText } from './../../../../constants';
+import updateButton from './../../../../assets/updateButton.svg';
+import deleteButton from './../../../../assets/deleteButton.svg';
 import { deleteCourse } from './../../../../store/courses/actionCreators';
 
 import { Section } from './CourseCard.style';
@@ -23,10 +21,6 @@ const CourseCard = ({
 }) => {
 	const dispatch = useDispatch();
 
-	function deleteCourseItem(courseId) {
-		dispatch(deleteCourse(courseId));
-	}
-
 	return (
 		<Section>
 			<div className='courseTitleAndDescription'>
@@ -42,7 +36,6 @@ const CourseCard = ({
 					<b>Duration:</b> {pipeDuration(duration)} hours
 				</p>
 				<p className='courseInfo'>
-					{' '}
 					<b>Created:</b> {creationDate.replace(/\//g, '.')}
 				</p>
 				<p className='courseInfo'>
@@ -56,13 +49,13 @@ const CourseCard = ({
 					<Button
 						buttonType='button'
 						className='updateCourse'
-						buttonText={updateCourseButtonText}
-					/>
+						buttonText={<img src={updateButton} alt='update' />}
+					></Button>
 					<Button
 						buttonType='button'
 						className='deleteCourse'
-						buttonText={deleteCourseButtonText}
-						onClick={() => deleteCourseItem(id)}
+						buttonText={<img src={deleteButton} alt='delete' />}
+						onClick={() => dispatch(deleteCourse(id))}
 					/>
 				</p>
 			</div>
