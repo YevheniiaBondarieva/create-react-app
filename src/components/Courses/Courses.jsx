@@ -1,22 +1,26 @@
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { Button } from '../../common';
 import CourseCard from './components/CourseCard/CourseCard';
 import SearchBar from './components/SearchBar/SearchBar';
 import { addCourseButtonText } from './../../constants';
-import { Main } from './Courses.style';
-
-import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { Main, EmptyContainer } from './Courses.style';
 
 import { getCourses } from './../../store/courses/actionCreators';
 import * as services from './../../store/services';
 import * as selectors from '../../store/selectors';
 import { getAuthors } from '../../store/authors/actionCreators';
+import { getCurrentUser } from '../../store/user/thunk';
+import { detachAuthors } from '../../store/authors/actionCreators';
 
 const Courses = () => {
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const allCourses = useSelector(selectors.courses);
 	const allAuthors = useSelector(selectors.authors);
+	const role = useSelector(selectors.role);
 	const [filteredCourses, setFilteredCourses] = useState(allCourses);
 
 	const fetchCourses = async () => {
@@ -28,6 +32,15 @@ const Courses = () => {
 		const response = await services.authors();
 		return response;
 	};
+
+	useEffect(() => {
+		const token = localStorage.getItem('token');
+		if (token) {
+			dispatch(getCurrentUser(token));
+		}
+		dispatch(detachAuthors());
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	useEffect(() => {
 		if (allCourses.length === 0) {
@@ -73,15 +86,22 @@ const Courses = () => {
 		<Main>
 			<section className='coursesSection'>
 				<SearchBar filterCourses={filterCourses} />
-				<Link to='/courses/add'>
+				{role === 'admin' ? (
 					<Button
 						buttonType='button'
 						buttonText={addCourseButtonText}
 						className='addCourseButton'
+						onClick={() => navigate('/courses/add')}
 					/>
-				</Link>
+				) : null}
 			</section>
-			{courseItems}
+			{filteredCourses.length > 0 ? (
+				courseItems
+			) : (
+				<EmptyContainer data-testid='emptyContainer'>
+					No courses found
+				</EmptyContainer>
+			)}
 		</Main>
 	);
 };

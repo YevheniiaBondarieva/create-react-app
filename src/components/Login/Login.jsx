@@ -1,8 +1,10 @@
-import { Input, Button } from '../../common';
+import { useNavigate, Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { Input, Button, Form } from '../../common';
 import { loginSuccess, loginFailure } from '../../store/user/actionCreators';
 import * as services from './../../store/services';
-import { Form } from './../../common';
-
 import {
 	loginEmailLabelText,
 	loginEmailPlaceholdetText,
@@ -11,12 +13,7 @@ import {
 	loginButtonText,
 } from './../../constants';
 
-import { useNavigate, Link } from 'react-router-dom';
-import { useState } from 'react';
-import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
-
-const Login = ({ handleLogin }) => {
+const Login = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
@@ -36,7 +33,7 @@ const Login = ({ handleLogin }) => {
 			if (loginResult.successful) {
 				const token = loginResult.result;
 				const name = loginResult.user.name;
-				handleLogin(token, name);
+				localStorage.setItem('token', token);
 				dispatch(loginSuccess({ name, email, token }));
 				navigate('/courses', { replace: true });
 			} else {
@@ -87,10 +84,6 @@ const Login = ({ handleLogin }) => {
 			</p>
 		</Form>
 	);
-};
-
-Login.propTypes = {
-	handleLogin: PropTypes.func.isRequired,
 };
 
 export default Login;

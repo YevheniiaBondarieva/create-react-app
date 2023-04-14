@@ -32,19 +32,26 @@ export const Section = styled.section`
 		white-space: nowrap;
 		width: 80%;
 	}
+	.courseButtons {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
 	.showCourse {
-		margin-top: 30px;
+		margin-top: 7px;
 		width: 10rem;
 		height: 2rem;
-		display: inline-block;
 		margin-right: 7px;
-		vertical-align: 3px;
+		margin-bottom: 3px;
+	}
+	.updateAndDeleteButtons {
+		margin-top: 20px;
+		margin-bottom: 3px;
 	}
 	.updateCourse,
 	.deleteCourse {
 		margin-right: 7px;
 		height: 2rem;
-		display: inline-block;
 	}
 	a.showCourse {
 		text-decoration: none;

@@ -1,13 +1,12 @@
-import { backToCoursesButtonText } from './../../constants';
-
-import { pipeDuration } from '../../helpers';
-import { Button } from '../../common';
-import * as selectors from './../../store/selectors';
-
 import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
+import { backToCoursesButtonText } from './../../constants';
 import { Article } from './CourseInfo.style';
+import { pipeDuration } from '../../helpers';
+import { Button } from '../../common';
+
+import * as selectors from './../../store/selectors';
 
 const CourseInfo = () => {
 	const { courseId } = useParams();

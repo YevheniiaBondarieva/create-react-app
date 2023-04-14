@@ -1,9 +1,7 @@
-import { Input, Button } from '../../common';
-
 import { useState } from 'react';
-
 import { useNavigate, Link } from 'react-router-dom';
 
+import { Input, Button, Form } from '../../common';
 import {
 	registrationNameLabelText,
 	registrationNamePlaceholdetText,
@@ -15,7 +13,6 @@ import {
 } from './../../constants';
 
 import * as services from './../../store/services';
-import { Form } from './../../common';
 
 const Registration = () => {
 	const [name, setName] = useState('');

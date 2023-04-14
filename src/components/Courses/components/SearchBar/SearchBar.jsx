@@ -1,13 +1,11 @@
-import { Button, Input } from '../../../../common';
+import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
+import { Button, Input } from '../../../../common';
 import {
 	searchPlaceholdetText,
 	searchButtonText,
 } from './../../../../constants';
-
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-
 import { Form } from './SearchBar.style';
 
 const SearchBar = ({ filterCourses }) => {
