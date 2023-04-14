@@ -13,21 +13,15 @@ import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import CourseInfo from './components/CourseInfo/CourseInfo';
 
 function App() {
-	const [userName, setUserName] = useState(localStorage.getItem('name'));
 	const token = localStorage.getItem('token');
 	const [isLoggedIn, setIsLoggedIn] = useState(token ? true : false);
 
-	const handleLogin = (token, name) => {
+	const handleLogin = (token) => {
 		localStorage.setItem('token', token);
-		localStorage.setItem('name', name);
-		setUserName(name);
 		setIsLoggedIn(true);
 	};
 
 	const handleLogout = () => {
-		localStorage.removeItem('token');
-		localStorage.removeItem('name');
-		setUserName(null);
 		setIsLoggedIn(false);
 	};
 
@@ -35,11 +29,7 @@ function App() {
 		<React.Fragment>
 			<BrowserRouter>
 				<GlobalStyle />
-				<Header
-					isLoggedIn={isLoggedIn}
-					userName={userName}
-					handleLogout={handleLogout}
-				/>
+				<Header isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
 				<Routes>
 					<Route exact path='/registration' element={<Registration />} />
 					<Route

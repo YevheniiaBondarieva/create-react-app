@@ -1,11 +1,14 @@
 import { Button } from '../../../../common';
 import { pipeDuration } from '../../../../helpers';
-
 import { showCourseButtonText } from './../../../../constants';
+import updateButton from './../../../../assets/updateButton.svg';
+import deleteButton from './../../../../assets/deleteButton.svg';
+import { deleteCourse } from './../../../../store/courses/actionCreators';
 
 import { Section } from './CourseCard.style';
 
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 const CourseCard = ({
@@ -16,6 +19,8 @@ const CourseCard = ({
 	duration,
 	courseAuthors,
 }) => {
+	const dispatch = useDispatch();
+
 	return (
 		<Section>
 			<div className='courseTitleAndDescription'>
@@ -31,7 +36,6 @@ const CourseCard = ({
 					<b>Duration:</b> {pipeDuration(duration)} hours
 				</p>
 				<p className='courseInfo'>
-					{' '}
 					<b>Created:</b> {creationDate.replace(/\//g, '.')}
 				</p>
 				<p className='courseInfo'>
@@ -42,6 +46,17 @@ const CourseCard = ({
 							buttonText={showCourseButtonText}
 						/>
 					</Link>
+					<Button
+						buttonType='button'
+						className='updateCourse'
+						buttonText={<img src={updateButton} alt='update' />}
+					></Button>
+					<Button
+						buttonType='button'
+						className='deleteCourse'
+						buttonText={<img src={deleteButton} alt='delete' />}
+						onClick={() => dispatch(deleteCourse(id))}
+					/>
 				</p>
 			</div>
 		</Section>

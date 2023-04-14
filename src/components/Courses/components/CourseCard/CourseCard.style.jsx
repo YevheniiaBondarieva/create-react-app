@@ -36,10 +36,15 @@ export const Section = styled.section`
 		margin-top: 30px;
 		width: 10rem;
 		height: 2rem;
-		float: center;
-		display: block;
-		margin-left: auto;
-		margin-right: auto;
+		display: inline-block;
+		margin-right: 7px;
+		vertical-align: 3px;
+	}
+	.updateCourse,
+	.deleteCourse {
+		margin-right: 7px;
+		height: 2rem;
+		display: inline-block;
 	}
 	a.showCourse {
 		text-decoration: none;

@@ -1,6 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 
 import { colors, fontSizes, fontFace } from './globalVariables';
+import './fonts.css';
 
 const GlobalStyle = createGlobalStyle`
 :root {
@@ -19,15 +20,7 @@ const GlobalStyle = createGlobalStyle`
     --24px-font-size: ${fontSizes.size26Px};
     --arial-font-face: ${fontFace.arial};
   }
-  @font-face {
-    font-family: 'Arial Regular';
-    src: url('./../assets/ArialMT.eot');
-    src: url('./../assets/ArialMT.eot?#iefix') format('embedded-opentype'),
-    url('./../assets/ArialMT.woff') format('woff'),
-    url('./../assets/ArialMT.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    }
+
   body {
     margin: 0;
     padding: 0;

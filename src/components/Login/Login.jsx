@@ -1,4 +1,7 @@
 import { Input, Button } from '../../common';
+import { loginSuccess, loginFailure } from '../../store/user/actionCreators';
+import * as services from './../../store/services';
+import { Form } from './../../common';
 
 import {
 	loginEmailLabelText,
@@ -9,12 +12,9 @@ import {
 } from './../../constants';
 
 import { useNavigate, Link } from 'react-router-dom';
-
 import { useState } from 'react';
-
 import PropTypes from 'prop-types';
-
-import { Form } from './../../common';
+import { useDispatch } from 'react-redux';
 
 const Login = ({ handleLogin }) => {
 	const [email, setEmail] = useState('');
@@ -22,6 +22,7 @@ const Login = ({ handleLogin }) => {
 	const [error, setError] = useState('');
 
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -31,27 +32,18 @@ const Login = ({ handleLogin }) => {
 			password,
 		};
 		try {
-			const response = await fetch('http://localhost:4000/login', {
-				method: 'POST',
-				body: JSON.stringify(loginUser),
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			});
-			if (!response.ok) {
-				throw new Error('Unable to log in.');
-			}
-			const loginResult = await response.json();
+			const loginResult = await services.login(loginUser);
 			if (loginResult.successful) {
 				const token = loginResult.result;
 				const name = loginResult.user.name;
 				handleLogin(token, name);
+				dispatch(loginSuccess({ name, email, token }));
 				navigate('/courses', { replace: true });
 			} else {
+				dispatch(loginFailure());
 				throw new Error('Unable to log in.');
 			}
 		} catch (error) {
-			console.error(error);
 			setError(
 				'Incorrect login credentials. Please verify your email and password.'
 			);
@@ -75,6 +67,7 @@ const Login = ({ handleLogin }) => {
 				labelText={loginPasswordLabelText}
 				placeholdetText={loginPasswordPlaceholdetText}
 				type='password'
+				autoComplete='on'
 				className='inputAuth'
 				labelClassName='labelAuth'
 				onChange={(e) => setPassword(e.target.value)}
