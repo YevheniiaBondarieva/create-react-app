@@ -5,6 +5,7 @@ const Button = ({
 	buttonType,
 	onClick,
 	className,
+	buttonIcon,
 	...otherProps
 }) => {
 	return (
@@ -14,7 +15,7 @@ const Button = ({
 			onClick={onClick}
 			{...otherProps}
 		>
-			{buttonText}
+			{buttonText} {buttonIcon}
 		</button>
 	);
 };

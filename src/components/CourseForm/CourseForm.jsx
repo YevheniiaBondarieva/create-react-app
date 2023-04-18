@@ -8,8 +8,6 @@ import {
 	createCourseButtonText,
 	createAuthorButtonText,
 	updateCourseButtonText,
-	deleteAuthorButtonText,
-	addAuthorButtonText,
 	addAuthorLabelText,
 	addAuthorPlaceholdetInputText,
 	courseDurationPlaceholdetText,
@@ -22,6 +20,8 @@ import {
 	minimumCourseDescriptionLength,
 	minimumAuthorNameLength,
 } from '../../constants';
+import Authors from './components/Authors/Authors';
+import CourseAuthors from './components/CourseAuthors/CourseAuthors';
 
 import * as selectors from '../../store/selectors';
 import {
@@ -34,7 +34,7 @@ import { addAuthor } from '../../store/authors/thunk';
 
 import { Main } from './CourseForm.style';
 
-const CreateCourse = () => {
+const CourseForm = () => {
 	const { courseId } = useParams();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -52,115 +52,92 @@ const CreateCourse = () => {
 	const [newAuthorName, setNewAuthorName] = useState('');
 
 	useEffect(() => {
-		setAuthors([
+		const notAttachedAuthors = [
 			...allAuthors.filter((item) => {
 				return item.isAttach === undefined || !item.isAttach;
 			}),
-		]);
+		];
+		setAuthors(notAttachedAuthors);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [allAuthors, courseId]);
 
 	useEffect(() => {
-		if (courseId) {
-			const currentCourse = allCourses.find((course) => course.id === courseId);
-			if (currentCourse) {
-				const { title, description, duration, authors } = currentCourse;
-				setCourseTitle(title);
-				setCourseDescription(description);
-				setCourseDuration(duration);
-				setDurationDisplay(pipeDuration(duration));
-				setCourseAuthors([
-					...allAuthors
-						.map((author) => ({
-							...author,
-							isAttach: authors.includes(author.id),
-						}))
-						.filter((author) => author.isAttach),
-				]);
-				setAuthors([
-					...allAuthors
-						.map((author) => ({
-							...author,
-							isAttach: !authors.includes(author.id),
-						}))
-						.filter((author) => author.isAttach),
-				]);
-			} else {
-				window.alert('Invalid course ID!');
-			}
+		if (!courseId) {
+			return;
 		}
+		const currentCourse = allCourses.find((course) => course.id === courseId);
+		if (!currentCourse) {
+			window.alert('Invalid course ID!');
+			return;
+		}
+		const { title, description, duration, authors } = currentCourse;
+		setCourseTitle(title);
+		setCourseDescription(description);
+		setCourseDuration(duration);
+		setDurationDisplay(pipeDuration(duration));
+		const isAttachedAuthors = [
+			...allAuthors
+				.map((author) => ({
+					...author,
+					isAttach: authors.includes(author.id),
+				}))
+				.filter((author) => author.isAttach),
+		];
+		const notAttachedAuthors = [
+			...allAuthors
+				.map((author) => ({
+					...author,
+					isAttach: !authors.includes(author.id),
+				}))
+				.filter((author) => author.isAttach),
+		];
+		setCourseAuthors(isAttachedAuthors);
+		setAuthors(notAttachedAuthors);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [courseId]);
 
 	const courseTitleExists = Boolean(courseTitle);
-	const validCourseDescription = courseDescription.length >= 2;
+	const minLength = 2;
+	const validCourseDescription = courseDescription.length >= minLength;
 	const validCourseDuration = courseDuration > 0;
 	const validCourseAuthors = courseAuthors.length > 0;
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		if (
-			courseTitleExists &&
-			validCourseDescription &&
-			validCourseDuration &&
-			validCourseAuthors
+			!courseTitleExists &&
+			!validCourseDescription &&
+			!validCourseDuration &&
+			!validCourseAuthors
 		) {
-			const newCourse = {
-				title: courseTitle,
-				description: courseDescription,
-				duration: Number(courseDuration),
-				authors: courseAuthors.map((item) => item['id']),
-			};
-			if (courseId) {
-				dispatch(updateCourse(courseId, newCourse));
-			} else {
-				dispatch(addCourse({ ...newCourse, creationDate: dateGeneratop() }));
-			}
-			dispatch(detachAuthors());
-			navigate('/courses');
-		} else {
 			window.alert('Please, fill in all fields');
+			return;
 		}
+		const newCourse = {
+			title: courseTitle,
+			description: courseDescription,
+			duration: Number(courseDuration),
+			authors: courseAuthors.map((item) => item['id']),
+		};
+		if (courseId) {
+			dispatch(updateCourse(courseId, newCourse));
+		} else {
+			dispatch(addCourse({ ...newCourse, creationDate: dateGeneratop() }));
+		}
+		dispatch(detachAuthors());
+		navigate('/courses');
 	};
-
-	const authorList = authors.map((author) => {
-		const { id, name } = author;
-		return (
-			<div id={id} key={id} className='authorsList'>
-				<p className='authorsList'>{name}</p>
-				<Button
-					buttonType='button'
-					className='addAuthor button'
-					buttonText={addAuthorButtonText}
-					onClick={() => addNewAuthor(author)}
-				/>
-			</div>
-		);
-	});
 
 	const createAuthor = () => {
-		if (newAuthorName.length >= 2) {
-			const newAuthor = {
-				name: newAuthorName,
-			};
-			dispatch(addAuthor(newAuthor));
-			setNewAuthorName('');
+		if (newAuthorName.length < minLength) {
+			return;
 		}
+		const newAuthor = {
+			name: newAuthorName,
+		};
+		dispatch(addAuthor(newAuthor));
+		setNewAuthorName('');
 	};
-
-	const displayAuthorCourse = courseAuthors.map((author) => {
-		return (
-			<div id={author.id} key={author.id} className='courseAuthors'>
-				<p className='courseAuthors'>{author.name}</p>
-				<Button
-					buttonType='button'
-					className='deleteAuthor button'
-					buttonText={deleteAuthorButtonText}
-					onClick={() => deleteAuthor(author)}
-				/>
-			</div>
-		);
-	});
 
 	const addNewAuthor = (author) => {
 		setCourseAuthors([...courseAuthors, author]);
@@ -235,7 +212,7 @@ const CreateCourse = () => {
 					</section>
 					<section>
 						<h3 className='authorsAndDuration'>Authors</h3>
-						{authorList}
+						{<Authors authors={authors} addNewAuthor={addNewAuthor} />}
 					</section>
 					<section>
 						<h3 className='authorsAndDuration'>Duration</h3>
@@ -249,8 +226,8 @@ const CreateCourse = () => {
 							min='1'
 							required
 							onChange={(e) => {
-								setDurationDisplay(pipeDuration(e.target.value));
 								setCourseDuration(e.target.value);
+								setDurationDisplay(pipeDuration(e.target.value));
 							}}
 						/>
 						<p className='courseDuration'>
@@ -261,8 +238,11 @@ const CreateCourse = () => {
 					</section>
 					<section>
 						<h3 className='authorsAndDuration'>Course authors</h3>
-						{displayAuthorCourse.length > 0 ? (
-							displayAuthorCourse
+						{courseAuthors.length > 0 ? (
+							<CourseAuthors
+								courseAuthors={courseAuthors}
+								deleteAuthor={deleteAuthor}
+							/>
 						) : (
 							<p className='listIsEmpty'>Author list is empty</p>
 						)}
@@ -273,4 +253,4 @@ const CreateCourse = () => {
 	);
 };
 
-export default CreateCourse;
+export default CourseForm;

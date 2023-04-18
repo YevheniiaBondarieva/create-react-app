@@ -5,7 +5,6 @@ import { backToCoursesButtonText } from './../../constants';
 import { Article } from './CourseInfo.style';
 import { pipeDuration } from '../../helpers';
 import { Button } from '../../common';
-import * as selectors from './../../store/selectors';
 
 import * as selectors from './../../store/selectors';
 

@@ -23,6 +23,7 @@ export default function userReducer(state = userInitialState, action) {
 		case actions.LOGOUT:
 			localStorage.clear();
 			return {
+				...state,
 				isAuth: false,
 				name: '',
 				email: '',

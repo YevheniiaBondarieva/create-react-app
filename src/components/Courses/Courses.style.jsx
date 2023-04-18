@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Main = styled.main`
-	section.coursesSection {
+	.coursesSection {
 		display: flex;
 		justify-content: space-between;
 	}

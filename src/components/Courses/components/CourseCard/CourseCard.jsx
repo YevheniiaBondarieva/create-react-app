@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { Button } from '../../../../common';
 import { pipeDuration } from '../../../../helpers';
-import { showCourseButtonText } from './../../../../constants';
+import { showCourseButtonText, roles } from './../../../../constants';
 import updateButton from './../../../../assets/updateButton.svg';
 import deleteButton from './../../../../assets/deleteButton.svg';
 
@@ -49,19 +49,19 @@ const CourseCard = ({
 							buttonText={showCourseButtonText}
 						/>
 					</Link>
-					{role === 'admin' ? (
+					{role === roles.admin ? (
 						<div className='updateAndDeleteButtons'>
 							<Link to={`/courses/update/${id}`}>
 								<Button
 									buttonType='button'
 									className='updateCourse'
-									buttonText={<img src={updateButton} alt='update' />}
+									buttonIcon={<img src={updateButton} alt='update' />}
 								/>
 							</Link>
 							<Button
 								buttonType='button'
 								className='deleteCourse'
-								buttonText={<img src={deleteButton} alt='delete' />}
+								buttonIcon={<img src={deleteButton} alt='delete' />}
 								onClick={() => dispatch(removeCourse(id))}
 							/>
 						</div>

@@ -40,6 +40,8 @@ export const loginButtonText = 'Login';
 
 export const backToCoursesButtonText = '< Back to courses';
 
+export const roles = { admin: 'admin', user: 'user' };
+
 export const mockedCoursesList = [
 	{
 		id: 'de5aaa59-90f5-4dbc-b8a9-aaf205c551ba',

@@ -10,19 +10,29 @@ const authorsReducer = (state = authorsInitialState, action) => {
 			return action.payload;
 		case actions.ATTACH_AUTHOR: {
 			const author = state.find((item) => item.id === action.payload);
-			if (!author) {
-				return [...state];
+			if (author) {
+				return state.map((item) => {
+					if (item.id === author.id) {
+						return { ...item, isAttach: true };
+					} else {
+						return item;
+					}
+				});
 			}
-			author.isAttach = true;
-			return [...state];
+			return state;
 		}
 		case actions.DETACH_AUTHOR: {
 			const author = state.find((item) => item.id === action.payload);
-			if (!author) {
-				return [...state];
+			if (author) {
+				return state.map((item) => {
+					if (item.id === author.id) {
+						return { ...item, isAttach: undefined };
+					} else {
+						return item;
+					}
+				});
 			}
-			author.isAttach = undefined;
-			return [...state];
+			return state;
 		}
 		case actions.DETACH_AUTHORS: {
 			const updatedAuthors = state.map((author) => ({

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '../../common';
 import CourseCard from './components/CourseCard/CourseCard';
 import SearchBar from './components/SearchBar/SearchBar';
-import { addCourseButtonText } from './../../constants';
+import { addCourseButtonText, roles } from './../../constants';
 import { Main, EmptyContainer } from './Courses.style';
 
 import { getCourses } from './../../store/courses/actionCreators';
@@ -86,7 +86,7 @@ const Courses = () => {
 		<Main>
 			<section className='coursesSection'>
 				<SearchBar filterCourses={filterCourses} />
-				{role === 'admin' ? (
+				{role === roles.admin ? (
 					<Button
 						buttonType='button'
 						buttonText={addCourseButtonText}

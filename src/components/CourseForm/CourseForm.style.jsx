@@ -11,8 +11,8 @@ export const Main = styled.main`
 		padding-left: 10px;
 		margin-bottom: 10px;
 	}
-	section.courseTitleInputAndCreateCourseButton,
-	section.forDescription {
+	.courseTitleInputAndCreateCourseButton,
+	.forDescription {
 		display: block;
 	}
 	.label {
@@ -36,7 +36,7 @@ export const Main = styled.main`
 		text-align: center;
 	}
 
-	input.author,
+	.author,
 	input.courseDuration {
 		display: block;
 		width: 40vw;
@@ -57,11 +57,11 @@ export const Main = styled.main`
 		font-size: var(--24px-font-size);
 	}
 	p.courseAuthors,
-	p.authorsList {
+	.authorsList {
 		display: inline-block;
 	}
-	button.addAuthor,
-	button.deleteAuthor {
+	.addAuthor,
+	.deleteAuthor {
 		margin-top: 10px;
 		margin-right: 20%;
 	}
