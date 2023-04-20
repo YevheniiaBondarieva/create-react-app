@@ -3,6 +3,7 @@ export const HeaderButtonLogoutText = 'Logout';
 export const addCourseButtonText = 'Add new course';
 
 export const createCourseButtonText = 'Create course';
+export const updateCourseButtonText = 'Update course';
 export const createAuthorButtonText = 'Create author';
 export const deleteAuthorButtonText = 'Delete author';
 export const addAuthorButtonText = 'Add author';
@@ -38,6 +39,8 @@ export const loginPasswordPlaceholdetText = 'Enter password';
 export const loginButtonText = 'Login';
 
 export const backToCoursesButtonText = '< Back to courses';
+
+export const roles = { admin: 'admin', user: 'user' };
 
 export const mockedCoursesList = [
 	{

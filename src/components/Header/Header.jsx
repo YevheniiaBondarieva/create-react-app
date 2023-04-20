@@ -1,19 +1,17 @@
-import Logo from './components/Logo/Logo';
-import { Button } from '../../common';
-
-import { HeaderButtonLogoutText } from './../../constants';
-
-import { HeaderCourses } from './Header.style';
-
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import PropTypes from 'prop-types';
+import Logo from './components/Logo/Logo';
+import { Button } from '../../common';
+import { HeaderButtonLogoutText } from './../../constants';
+import { HeaderCourses } from './Header.style';
 
 import { logout } from '../../store/user/actionCreators';
 import { getUserName } from '../../store/selectors';
+import * as services from '../../store/services';
 
-const Header = ({ isLoggedIn, handleLogout }) => {
+const Header = () => {
+	const token = localStorage.getItem('token');
 	const navigate = useNavigate();
 	const userName = useSelector(getUserName);
 	const dispatch = useDispatch();
@@ -23,7 +21,7 @@ const Header = ({ isLoggedIn, handleLogout }) => {
 				<Link to='/'>
 					<Logo />
 				</Link>
-				{isLoggedIn ? (
+				{token ? (
 					<ul className='userInfo'>
 						<li className='userName'>
 							<a href='/' className='headerUserInfo'>
@@ -35,8 +33,8 @@ const Header = ({ isLoggedIn, handleLogout }) => {
 								buttonType='button'
 								className='header__button'
 								buttonText={HeaderButtonLogoutText}
-								onClick={() => {
-									handleLogout();
+								onClick={async () => {
+									await services.logout(token.toString());
 									dispatch(logout());
 									navigate('/login');
 								}}
@@ -47,11 +45,6 @@ const Header = ({ isLoggedIn, handleLogout }) => {
 			</nav>
 		</HeaderCourses>
 	);
-};
-
-Header.propTypes = {
-	isLoggedIn: PropTypes.bool.isRequired,
-	handleLogout: PropTypes.func.isRequired,
 };
 
 export default Header;

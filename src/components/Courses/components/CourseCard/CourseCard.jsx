@@ -1,15 +1,17 @@
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
+
 import { Button } from '../../../../common';
 import { pipeDuration } from '../../../../helpers';
-import { showCourseButtonText } from './../../../../constants';
+import { showCourseButtonText, roles } from './../../../../constants';
 import updateButton from './../../../../assets/updateButton.svg';
 import deleteButton from './../../../../assets/deleteButton.svg';
-import { deleteCourse } from './../../../../store/courses/actionCreators';
+
+import * as selectors from './../../../../store/selectors';
+import { removeCourse } from '../../../../store/courses/thunk';
 
 import { Section } from './CourseCard.style';
-
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
 
 const CourseCard = ({
 	id,
@@ -19,6 +21,7 @@ const CourseCard = ({
 	duration,
 	courseAuthors,
 }) => {
+	const role = useSelector(selectors.role);
 	const dispatch = useDispatch();
 
 	return (
@@ -38,7 +41,7 @@ const CourseCard = ({
 				<p className='courseInfo'>
 					<b>Created:</b> {creationDate.replace(/\//g, '.')}
 				</p>
-				<p className='courseInfo'>
+				<div className='courseButtons'>
 					<Link to={`/courses/${id}`} className='showCourse'>
 						<Button
 							buttonType='button'
@@ -46,18 +49,24 @@ const CourseCard = ({
 							buttonText={showCourseButtonText}
 						/>
 					</Link>
-					<Button
-						buttonType='button'
-						className='updateCourse'
-						buttonText={<img src={updateButton} alt='update' />}
-					></Button>
-					<Button
-						buttonType='button'
-						className='deleteCourse'
-						buttonText={<img src={deleteButton} alt='delete' />}
-						onClick={() => dispatch(deleteCourse(id))}
-					/>
-				</p>
+					{role === roles.admin ? (
+						<div className='updateAndDeleteButtons'>
+							<Link to={`/courses/update/${id}`}>
+								<Button
+									buttonType='button'
+									className='updateCourse'
+									buttonIcon={<img src={updateButton} alt='update' />}
+								/>
+							</Link>
+							<Button
+								buttonType='button'
+								className='deleteCourse'
+								buttonIcon={<img src={deleteButton} alt='delete' />}
+								onClick={() => dispatch(removeCourse(id))}
+							/>
+						</div>
+					) : null}
+				</div>
 			</div>
 		</Section>
 	);
