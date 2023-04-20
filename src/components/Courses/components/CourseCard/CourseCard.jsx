@@ -25,7 +25,7 @@ const CourseCard = ({
 	const dispatch = useDispatch();
 
 	return (
-		<Section>
+		<Section data-testid='courseCard'>
 			<div className='courseTitleAndDescription'>
 				<h2 className='courseTitleAndDescription'>{title}</h2>
 				<p>{description}</p>
