@@ -8,6 +8,7 @@ const CourseAuthors = ({ courseAuthors, deleteAuthor }) => {
 				<p className='courseAuthors'>{author.name}</p>
 				<Button
 					buttonType='button'
+					data-testid={`deleteButtonAuthor: ${author.id}`}
 					className='deleteAuthor button'
 					buttonText={deleteAuthorButtonText}
 					onClick={() => deleteAuthor(author)}

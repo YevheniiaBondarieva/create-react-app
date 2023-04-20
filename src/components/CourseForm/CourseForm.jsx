@@ -97,17 +97,17 @@ const CourseForm = () => {
 	}, [courseId]);
 
 	const courseTitleExists = Boolean(courseTitle);
-	const minLength = 2;
-	const validCourseDescription = courseDescription.length >= minLength;
+	const validCourseDescription =
+		courseDescription.length >= minimumCourseDescriptionLength;
 	const validCourseDuration = courseDuration > 0;
 	const validCourseAuthors = courseAuthors.length > 0;
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		if (
-			!courseTitleExists &&
-			!validCourseDescription &&
-			!validCourseDuration &&
+			!courseTitleExists ||
+			!validCourseDescription ||
+			!validCourseDuration ||
 			!validCourseAuthors
 		) {
 			window.alert('Please, fill in all fields');
@@ -129,7 +129,7 @@ const CourseForm = () => {
 	};
 
 	const createAuthor = () => {
-		if (newAuthorName.length < minLength) {
+		if (newAuthorName.length < minimumAuthorNameLength) {
 			return;
 		}
 		const newAuthor = {
@@ -151,7 +151,7 @@ const CourseForm = () => {
 
 	return (
 		<Main>
-			<form onSubmit={(e) => handleSubmit(e)}>
+			<form data-testid='courseForm' onSubmit={(e) => handleSubmit(e)}>
 				<section className='courseTitleInputAndCreateCourseButton'>
 					<Input
 						id='title'
@@ -210,7 +210,7 @@ const CourseForm = () => {
 							onClick={() => createAuthor()}
 						/>
 					</section>
-					<section>
+					<section data-testid='authors'>
 						<h3 className='authorsAndDuration'>Authors</h3>
 						{<Authors authors={authors} addNewAuthor={addNewAuthor} />}
 					</section>
@@ -236,7 +236,7 @@ const CourseForm = () => {
 							&nbsp;hours
 						</p>
 					</section>
-					<section>
+					<section data-testid='courseAuthors'>
 						<h3 className='authorsAndDuration'>Course authors</h3>
 						{courseAuthors.length > 0 ? (
 							<CourseAuthors

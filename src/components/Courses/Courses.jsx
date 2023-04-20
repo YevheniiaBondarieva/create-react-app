@@ -89,6 +89,7 @@ const Courses = () => {
 				{role === roles.admin ? (
 					<Button
 						buttonType='button'
+						data-testid='addButton'
 						buttonText={addCourseButtonText}
 						className='addCourseButton'
 						onClick={() => navigate('/courses/add')}

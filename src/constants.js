@@ -16,8 +16,8 @@ export const courseDescriptionLabelText = 'Description';
 export const courseTitleLabelText = 'Title';
 export const courseTitlePlaceholdetText = 'Enter title...';
 export const defaultCourseDuration = 0;
-export const minimumCourseDescriptionLength = '2';
-export const minimumAuthorNameLength = '2';
+export const minimumCourseDescriptionLength = 2;
+export const minimumAuthorNameLength = 2;
 
 export const searchButtonText = 'Search';
 export const searchPlaceholdetText = 'Enter course name...';
